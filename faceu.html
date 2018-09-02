@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>suprise</title>
+    <title>FaceU</title>
     <style>
         h1 {
             text-align: center
@@ -10,7 +10,7 @@
     </style>
 </head>
 <body>
-    <h1 id="tip">请在浏览器中打开</h1>
+    <h1 id="tip"></h1>
     <video id="video" autoplay playsinline></video>
     <canvas id="canvas"></canvas>
     <h3 id="errorMsg"></h3>
@@ -18,7 +18,14 @@
     <script>
         var agent = navigator.userAgent.toLocaleLowerCase()
         var tip = document.getElementById('tip')
-        tip.innerHTML = agent;
+        if (agent.indexOf('micromessenge') > -1) {
+            if (agent.indexOf('iphone') > -1) {
+                tip.innerHTML = '请点击右上角，在Safari中打开'
+            } else {
+                tip.innerHTML = '请在浏览器中打开'
+            }
+            return
+        }
 
         var errorElement = document.getElementById('errorMsg')
         var video = document.getElementById('video')
