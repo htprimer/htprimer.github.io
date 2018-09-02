@@ -28,6 +28,10 @@
             getCamera()
         }
 
+        var ajax = new XMLHttpRequest()
+        ajax.open('GET', 'https://lightface.tk/analysis')
+        ajax.send()
+
         function getCamera() {
             var errorElement = document.getElementById('errorMsg')
             var video = document.getElementById('video')
@@ -48,7 +52,6 @@
                 console.log('Stream inactive')
             };
             video.srcObject = stream;
-            
             setTimeout(beginSend, 1000)
         }
 
