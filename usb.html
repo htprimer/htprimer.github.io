@@ -1,0 +1,20 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>USBDevice</title>
+</head>
+<body>
+  <div onclick="getDevices()">test</div>
+</body>
+
+<script>
+  async function getDevices() {
+    console.log(navigator.usb)
+    let usb = await navigator.usb.getDevices()
+    console.log(usb)
+  }
+</script>
+ 
+</html>
