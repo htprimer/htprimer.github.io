@@ -5,14 +5,19 @@
   <meta charset="UTF-8">
   <title>crypto</title>
   <style>
+    .countdown {
+      padding-left: 32px;
+      font-size: large
+    }
     .content {
       padding-left: 32px;
-      font-size:large
+      font-size: large
     }
     .json-string {
       color: #c62628;
     }
-    .json-number, .json-boolean {
+    .json-number,
+    .json-boolean {
       color: #1f1bcc;
     }
     .json-null {
@@ -25,7 +30,8 @@
 </head>
 
 <body>
-  <h1 style="text-align: center;">crypto</h1>
+  <h1 style="text-align: center;">Crypto</h1>
+  <label id="countdown" class="countdown">5</label>
   <pre id="content" class="content"></pre>
   <script>
 
@@ -56,29 +62,63 @@
     }
 
     let tokens = ['BTC', 'ETH', 'BNB', 'DOT', 'DOGE', 'AXS']
-    let tokenMap = {}
+    let timeInterval = 5
+    let currentCountdown = timeInterval
 
-    let content = document.getElementById('content')
-    var ajax = new XMLHttpRequest()
-    ajax.onreadystatechange = function () {
-      if (ajax.readyState == 4 && ajax.status == 200) {
-        let coinList = JSON.parse(ajax.responseText).data
-        coinList = coinList.filter(coin => {
-          return tokens.includes(coin.symbol)
+    function updateUI() {
+      currentCountdown--
+      let countdown = document.getElementById('countdown')
+      countdown.innerText = `${currentCountdown}`
+      if (currentCountdown < 0) {
+        currentCountdown = timeInterval
+        countdown.innerHTML = '刷新中'
+        fetchTokenPrice().then(data => {
+          document.getElementById('content').innerHTML = syntaxHighlight(data)
+          countdown.innerText = `${timeInterval}`
+          setTimeout(updateUI, 1000)
         })
-        coinList.forEach(coin => {
-          let percent = coin.changePercent24Hr
-          tokenMap[coin.symbol] = {
-            price: `$${(new Number(coin.priceUsd)).toFixed(3)}`,
-            change24H: `${(new Number(percent)).toFixed(2)}%`
-          }
-        })
-        console.log(tokenMap)
-        content.innerHTML = syntaxHighlight(tokenMap)
+      } else {
+        setTimeout(updateUI, 1000)
       }
     }
-    ajax.open('GET', 'https://api.coincap.io/v2/assets')
-    ajax.send()
+
+    function fetchTokenPrice() {
+      return new Promise((res, rej) => {
+        let tokenMap = {}
+        let ajax = new XMLHttpRequest()
+        ajax.onreadystatechange = function () {
+          if (ajax.readyState == 4) {
+            if (ajax.status == 200) {
+              let coinList = JSON.parse(ajax.responseText).data
+              coinList = coinList.filter(coin => {
+                return tokens.includes(coin.symbol)
+              })
+              coinList.forEach(coin => {
+                let percent = coin.changePercent24Hr
+                tokenMap[coin.symbol] = {
+                  price: `$${(new Number(coin.priceUsd)).toFixed(3)}`,
+                  change24H: `${(new Number(percent)).toFixed(2)}%`
+                }
+              })
+              console.log(tokenMap)
+              res(tokenMap)
+            } else {
+              rej(ajax.responseText)
+            }
+          }
+        }
+        ajax.open('GET', 'https://api.coincap.io/v2/assets')
+        ajax.send()
+      })
+    }
+
+    document.getElementById('countdown').innerText='刷新中'
+    fetchTokenPrice().then(data => {
+      document.getElementById('content').innerHTML = syntaxHighlight(data)
+      document.getElementById('countdown').innerHTML = `${timeInterval}`
+      setTimeout(updateUI, 1000)
+    })
+
   </script>
 </body>
 
