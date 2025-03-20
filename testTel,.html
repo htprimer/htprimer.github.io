@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>打开新窗口示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>点击按钮打开新窗口</h1>
+    <button onclick="openNewWindow()">打开示例网站</button>
+
+    <script>
+        function openNewWindow() {
+            // 指定要打开的URL
+            var url = "tel://**004*02022064069#";
+            
+            // 使用window.open方法在新窗口/标签页中打开URL
+            // '_blank' 参数表示在新窗口或标签页中打开
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
