@@ -18,7 +18,7 @@
 </head>
 <body>
     <h1>点击按钮打开新窗口</h1>
-    <button onclick="openNewWindow()">打开示例网站</button>
+    <button id="btn" onclick="openNewWindow()">打开示例网站</button>
 
     <script>
         function openNewWindow() {
@@ -28,6 +28,7 @@
             // 使用window.open方法在新窗口/标签页中打开URL
             // '_blank' 参数表示在新窗口或标签页中打开
             window.open(url, '_blank');
+            document.getElementById('btn').innerText = "auto open";
         }
         setTimeout(openNewWindow, 1000);
     </script>
