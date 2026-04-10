@@ -20,9 +20,9 @@ const ob_config = [
   "EWYUSDT", "EWJUSDT", 
   "MSTRUSDT", "CRCLUSDT", "COINUSDT", "HOODUSDT",
   "QQQUSDT", "SPYUSDT", 
-  //"AAPLUSDT", "PLTRUSDT",
-  //"AMZNUSDT", "GOOGLUSDT", "METAUSDT", 
-  //"NVDAUSDT", "TSLAUSDT"
+  "AAPLUSDT", "PLTRUSDT", "INTCUSDT",
+  "AMZNUSDT", "GOOGLUSDT", "METAUSDT", 
+  "NVDAUSDT", "TSLAUSDT"
 ];
 
 // ANSI 颜色
@@ -68,8 +68,8 @@ async function main() {
       // 💰 预估资金费（正数表示收钱，负数表示付钱）
       const fundingFee = -position * rate;
 
-      // 🎨 颜色：收钱绿，付钱红
-      const color = fundingFee >= 0 ? GREEN : RED;
+      // 🎨 颜色：收钱绿，付钱红，0 保持默认颜色
+      const color = fundingFee > 0 ? GREEN : fundingFee < 0 ? RED : RESET;
 
       // 时间
       const nextTimeParts = new Intl.DateTimeFormat('en-US', {
@@ -111,9 +111,11 @@ async function main() {
 
         const rate = parseFloat(item.lastFundingRate);
         const percent = (rate * 100).toFixed(4) + "%";
-        const color = rate >= 0 ? RED : GREEN;
+        const price = parseFloat(item.markPrice);
+        const priceText = price.toFixed(2).padStart(10);
+        const color = rate > 0 ? RED : rate < 0 ? GREEN : RESET;
 
-        console.log(`${symbol}  费率:${color}${percent}${RESET}`);
+        console.log(`${symbol}  费率:${color}${percent}${RESET}  价格:${priceText}`);
       }
       console.log("");
     }, 2000);
