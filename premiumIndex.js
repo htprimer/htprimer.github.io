@@ -7,8 +7,8 @@ const https = require("https");
 const CONFIG = {
   BTCDOMUSDT: -75900,
   BTCUSDT: -61200,
-  BZUSDT: 51500,
-  CLUSDT: -35700,
+  BZUSDT: -51500,
+  CLUSDT: 35700,
   BNBUSDT: 35300,
   TRXUSDT: -25600,
   XRPUSDT: -13600,
@@ -54,11 +54,11 @@ async function main() {
       const price = parseFloat(item.markPrice);
       const position = CONFIG[symbol];
 
-      // 💰 预估资金费
-      const fundingFee = position * rate;
+      // 💰 预估资金费（正数表示收钱，负数表示付钱）
+      const fundingFee = -position * rate;
 
-      // 🎨 颜色
-      const color = rate >= 0 ? RED : GREEN;
+      // 🎨 颜色：收钱绿，付钱红
+      const color = fundingFee >= 0 ? GREEN : RED;
 
       // 时间
       const nextTimeParts = new Intl.DateTimeFormat('en-US', {
@@ -77,11 +77,17 @@ async function main() {
 
       const nextTime = `${nextTimeObj.month}-${nextTimeObj.day} ${nextTimeObj.hour}:${nextTimeObj.minute}`;
 
+      const symbolText = symbol.padEnd(10);
+      const rateText = percent.padStart(8);
+      const priceText = price.toFixed(2).padStart(10);
+      const positionText = position.toString().padStart(7);
+      const fundingText = fundingFee.toFixed(4).padStart(9);
+
       console.log(
-        `${symbol}  费率:${color}${percent}${RESET}  价格:${price.toFixed(2)}`
+        `${symbolText} 费率:${color}${rateText}${RESET} 价格:${priceText}`
       );
       console.log(
-        `    仓位:${position}U  资金:${color}${fundingFee.toFixed(4)}${RESET}  结算:${nextTime}`
+        `  仓位:${positionText}U 资金:${color}${fundingText}${RESET} 结算:${nextTime}`
       );
       console.log("");
     }
