@@ -12,7 +12,18 @@ const CONFIG = {
   BNBUSDT: 35300,
   TRXUSDT: -25600,
   XRPUSDT: -13600,
+  ETHUSDT: -9600,
 };
+
+const ob_config = [
+  "PAXGUSDT", "XAUUSDT", "XAGUSDT",
+  "EWYUSDT", "EWJUSDT", 
+  "MSTRUSDT", "CRCLUSDT", "COINUSDT", "HOODUSDT",
+  "QQQUSDT", "SPYUSDT", 
+  //"AAPLUSDT", "PLTRUSDT",
+  //"AMZNUSDT", "GOOGLUSDT", "METAUSDT", 
+  //"NVDAUSDT", "TSLAUSDT"
+];
 
 // ANSI 颜色
 const RED = "\x1b[31m";
@@ -91,6 +102,21 @@ async function main() {
       );
       console.log("");
     }
+
+    setTimeout(() => {
+      console.log("备用交易对资金费率：\n");
+      for (const symbol of ob_config) {
+        const item = data.find(x => x.symbol === symbol);
+        if (!item) continue;
+
+        const rate = parseFloat(item.lastFundingRate);
+        const percent = (rate * 100).toFixed(4) + "%";
+        const color = rate >= 0 ? RED : GREEN;
+
+        console.log(`${symbol}  费率:${color}${percent}${RESET}`);
+      }
+      console.log("");
+    }, 2000);
 
   } catch (err) {
     console.error("Error:", err.message);
