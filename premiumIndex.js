@@ -5,13 +5,13 @@ const https = require("https");
 
 // 👉 你关心的交易对 + 仓位（USDT）
 const CONFIG = {
-  BTCDOMUSDT: 75900,
-  BTCUSDT: 61200,
+  BTCDOMUSDT: -75900,
+  BTCUSDT: -61200,
   BZUSDT: 51500,
-  CLUSDT: 35700,
+  CLUSDT: -35700,
   BNBUSDT: 35300,
-  TRXUSDT: 25600,
-  XRPUSDT: 13600,
+  TRXUSDT: -25600,
+  XRPUSDT: -13600,
 };
 
 // ANSI 颜色
@@ -61,15 +61,30 @@ async function main() {
       const color = rate >= 0 ? RED : GREEN;
 
       // 时间
-      const nextTime = new Date(item.nextFundingTime)
-        .toLocaleString('sv-SE');
+      const nextTimeParts = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Asia/Shanghai',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      }).formatToParts(new Date(item.nextFundingTime));
+
+      const nextTimeObj = {};
+      nextTimeParts.forEach(part => {
+        if (part.type !== 'literal') nextTimeObj[part.type] = part.value;
+      });
+
+      const nextTime = `${nextTimeObj.month}-${nextTimeObj.day} ${nextTimeObj.hour}:${nextTimeObj.minute}`;
 
       console.log(
-        `${symbol} 率:${color}${percent}${RESET} 价:${price.toFixed(2)} 仓:${position}U 资金:${color}${fundingFee.toFixed(4)}${RESET} 结:${nextTime}`
+        `${symbol}  费率:${color}${percent}${RESET}  价格:${price.toFixed(2)}`
       );
+      console.log(
+        `    仓位:${position}U  资金:${color}${fundingFee.toFixed(4)}${RESET}  结算:${nextTime}`
+      );
+      console.log("");
     }
-
-    console.log("正费=做空收 / 负费=做多收");
 
   } catch (err) {
     console.error("Error:", err.message);
@@ -77,5 +92,5 @@ async function main() {
 }
 
 // 每10秒刷新
-setInterval(main, 10000);
+// setInterval(main, 10000);
 main();
