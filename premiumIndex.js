@@ -115,7 +115,10 @@ async function main() {
         const priceText = price.toFixed(2).padStart(10);
         const color = rate > 0 ? RED : rate < 0 ? GREEN : RESET;
 
-        console.log(`${symbol}  费率:${color}${percent}${RESET}  价格:${priceText}`);
+        const symbolText = symbol.padEnd(10);
+        const rateText = percent.padStart(8);
+
+        console.log(`${symbolText} 费率:${color}${rateText}${RESET}  价格:${priceText}`);
       }
       console.log("");
     }, 2000);
