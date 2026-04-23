@@ -103,25 +103,36 @@ async function main() {
       console.log("");
     }
 
-    setTimeout(() => {
-      console.log("备用交易对资金费率：\n");
-      for (const symbol of ob_config) {
-        const item = data.find(x => x.symbol === symbol);
-        if (!item) continue;
+    console.log("备用交易对资金费率：\n");
+    for (const symbol of ob_config) {
+      const item = data.find(x => x.symbol === symbol);
+      if (!item) continue;
 
-        const rate = parseFloat(item.lastFundingRate);
-        const percent = (rate * 100).toFixed(4) + "%";
-        const price = parseFloat(item.markPrice);
-        const priceText = price.toFixed(2).padStart(10);
-        const color = rate > 0 ? RED : rate < 0 ? GREEN : RESET;
+      const rate = parseFloat(item.lastFundingRate);
+      const percent = (rate * 100).toFixed(4) + "%";
+      const price = parseFloat(item.markPrice);
+      const priceText = price.toFixed(2).padStart(10);
+      const color = rate > 0 ? RED : rate < 0 ? GREEN : RESET;
 
-        const symbolText = symbol.padEnd(10);
-        const rateText = percent.padStart(8);
+      const symbolText = symbol.padEnd(10);
+      const rateText = percent.padStart(8);
 
-        console.log(`${symbolText} 费率:${color}${rateText}${RESET}  价格:${priceText}`);
-      }
-      console.log("");
-    }, 2000);
+      console.log(`${symbolText} 费率:${color}${rateText}${RESET}  价格:${priceText}`);
+    }
+
+    // BZ/CL 价差 & XPT/XPD 比率
+    const bz = data.find(x => x.symbol === "BZUSDT");
+    const cl = data.find(x => x.symbol === "CLUSDT");
+    const xpt = data.find(x => x.symbol === "XPTUSDT");
+    const xpd = data.find(x => x.symbol === "XPDUSDT");
+
+    if (bz && cl) {
+      console.log(`BZ-CL 价差: ${(parseFloat(bz.markPrice) - parseFloat(cl.markPrice)).toFixed(4)}`);
+    }
+    if (xpt && xpd) {
+      console.log(`XPT/XPD 比率: ${(parseFloat(xpt.markPrice) / parseFloat(xpd.markPrice)).toFixed(4)}`);
+    }
+    console.log("");
 
   } catch (err) {
     console.error("Error:", err.message);
