@@ -97,9 +97,6 @@ async function main() {
       console.log(
         `${symbolText} 费率:${color}${rateText}${RESET} 价格:${priceText}`
       );
-      console.log(
-        `  仓位:${positionText}U 资金:${color}${fundingText}${RESET} 结算:${nextTime}`
-      );
       console.log("");
     }
 
