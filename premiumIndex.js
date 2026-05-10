@@ -16,13 +16,11 @@ const CONFIG = {
 };
 
 const ob_config = [
-  "PAXGUSDT", "XAUUSDT", "XAGUSDT",
-  "EWYUSDT", "EWJUSDT", 
-  "MSTRUSDT", "CRCLUSDT", "COINUSDT", "HOODUSDT",
-  "QQQUSDT", "SPYUSDT", 
-  "AAPLUSDT", "PLTRUSDT", "INTCUSDT",
-  "AMZNUSDT", "GOOGLUSDT", "METAUSDT", 
-  "NVDAUSDT", "TSLAUSDT"
+  'PAXGUSDT', 'XAUUSDT', 'XAGUSDT', 'COPPERUSDT', 'EWYUSDT', 'EWJUSDT',
+  'MSTRUSDT', 'CRCLUSDT', 'COINUSDT', 'HOODUSDT', 'QQQUSDT',
+  'SPYUSDT', 'AAPLUSDT', 'PLTRUSDT',, 'AMZNUSDT', 'MSFTUSDT',
+  'GOOGLUSDT', 'METAUSDT', 'NVDAUSDT', 'TSLAUSDT',
+  'NATGASUSDT', 'MUUSDT', 'SNDKUSDT', 'AMDUSDT', 'QCOMUSDT', 'INTCUSDT'
 ];
 
 // ANSI 颜色
@@ -97,7 +95,6 @@ async function main() {
       console.log(
         `${symbolText} 费率:${color}${rateText}${RESET} 价格:${priceText}`
       );
-      console.log("");
     }
 
     console.log("备用交易对资金费率：\n");
