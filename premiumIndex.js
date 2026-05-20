@@ -119,12 +119,17 @@ async function main() {
     const cl = data.find(x => x.symbol === "CLUSDT");
     const xpt = data.find(x => x.symbol === "XPTUSDT");
     const xpd = data.find(x => x.symbol === "XPDUSDT");
+    const xau = data.find(x => x.symbol === "XAUUSDT");
+    const xag = data.find(x => x.symbol === "XAGUSDT");
 
     if (bz && cl) {
       console.log(`BZ-CL 价差: ${(parseFloat(bz.markPrice) - parseFloat(cl.markPrice)).toFixed(4)}`);
     }
     if (xpt && xpd) {
       console.log(`XPT/XPD 比率: ${(parseFloat(xpt.markPrice) / parseFloat(xpd.markPrice)).toFixed(4)}`);
+    }
+    if (xau && xag) {
+      console.log(`XAU/XAG 比率: ${(parseFloat(xau.markPrice) / parseFloat(xag.markPrice)).toFixed(4)}`);
     }
     console.log("");
 
